@@ -1,0 +1,39 @@
+body {
+    color: #fff;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    background: url(/static/images/python.jpg) center / cover no-repeat;
+    filter: blur(0.1px);
+}
+
+.blurry-background {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.centered-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 350px;
+    border-radius: 0px;
+    box-shadow: 30px 10px 30px rgba(0, 0, 0, 2);
+
+
+}
+
+}
