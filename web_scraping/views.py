@@ -5,4 +5,3 @@ def home(request):
     """Парсим данные с авито"""
 
     return render(request, 'home.html')
-
