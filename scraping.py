@@ -56,6 +56,7 @@ class AvitoScrap:
 
 
 
+
     def scraping(self):
         self.__set_up()
         self.__get_url()
