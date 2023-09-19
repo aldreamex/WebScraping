@@ -46,6 +46,7 @@ class AvitoScrap:
             # print(name, descriptions, url, price)
         self.__save_data()
 
+
     def __save_data(self):
 
         sorted_data = sorted(self.data, key=lambda x: float(x['price']))
