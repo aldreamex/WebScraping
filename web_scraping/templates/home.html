@@ -10,7 +10,13 @@
 <body>
     <div class="blurry-background">
             <div class="centered-box">
-                <p>#############################</p>
+                <p>
+                    {% for item in scraper_item %}
+                        <a href="{{ item }}">{{ item.name }}</a><br>
+                        Описание: {{ item.descriptions }}<br>
+                        Цена: {{ item.price }}<br>
+                    {% endfor %}
+                </p>
             </div>
     </div>
 </body>

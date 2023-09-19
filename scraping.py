@@ -1,7 +1,7 @@
-import json
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from web_scraping.models import AvitoItem
 # driver = uc.Chrome()
 # driver.get('https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1')
 
@@ -21,10 +21,18 @@ class AvitoScrap:
         self.driver.get(self.url)
 
     def __paginator(self):
-        while self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']") and self.count > 0:
+        # while self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']") and self.count > 0:
+        #     self.__scrap_page()
+        #     self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']").click()
+        #     self.count += 1
+        while self.count > 0:
             self.__scrap_page()
-            self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']").click()
-            self.count += 1
+            next_button = self.driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']")
+            if next_button.is_displayed():
+                next_button.click()
+                self.count -= 1
+            else:
+                break
 
     def __scrap_page(self):
         titles = self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='item']")
@@ -43,28 +51,37 @@ class AvitoScrap:
             if any([item in descriptions for item in self.items]):
                 self.data.append(data)
 
+            sorted_data = sorted(self.data, key=lambda x: float(x['price']))
+
+        for data in sorted_data:
+            scraper_item = AvitoItem(name=data['name'],
+                                   descriptions=data['descriptions'],
+                                   url=data['url'],
+                                   price=data['price'])
+            scraper_item.save()
+
+            # if any([item in descriptions for item in self.items]):
+            #     self.data.append(data)
+
             # print(name, descriptions, url, price)
-        self.__save_data()
+        # self.__save_data()
 
 
-    def __save_data(self):
-
-        sorted_data = sorted(self.data, key=lambda x: float(x['price']))
-
-        with open("items.json", 'w', encoding='utf-8') as f:
-            json.dump(sorted_data, f, ensure_ascii=False, indent=4)
-
-
-
+    # def __save_data(self):
+    #
+    #     sorted_data = sorted(self.data, key=lambda x: float(x['price']))
+    #
+    #     with open("items.json", 'w', encoding='utf-8') as f:
+    #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
 
     def scraping(self):
         self.__set_up()
         self.__get_url()
         self.__paginator()
-
-if __name__=="__main__":
-    AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104',
-               count=1,
-               items=['без залога']
-               ).scraping()
+#
+# if __name__=="__main__":
+#     AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104',
+#                count=1,
+#                items=['Без комиссии, без залога', 'комнаты']
+#                ).scraping()
 
