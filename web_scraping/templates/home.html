@@ -5,19 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>scraping</title>
+    <title>home</title>
 </head>
 <body>
-    <div class="blurry-background">
-            <div class="centered-box">
-                <p>
-                    {% for item in scraper_item %}
-                        <a href="{{ item }}">{{ item.name }}</a><br>
-                        Описание: {{ item.descriptions }}<br>
-                        Цена: {{ item.price }}<br>
-                    {% endfor %}
-                </p>
-            </div>
-    </div>
+    <a class="custom-glow-on-hover btn me-2 py-3 mt-md-2 text-black" href="{% url 'scraping' %}">scraping avito</a>
 </body>
 </html>

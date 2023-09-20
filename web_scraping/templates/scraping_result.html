@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>scraping_result</title>
+</head>
+<body>
+            {% for item in scraper_item %}
+            <div class="item">
+                <p>
+                    <strong>Название:</strong> {{ item.name }}<br>
+                    <strong>Ссылка:</strong> <a href="{{ item.url }}">{{ item.url }}</a><br>
+                    <strong>Описание:</strong> {{ item.descriptions }}<br>
+                    <strong>Цена:</strong> {{ item.price }}<br>
+                </p>
+            </div>
+            {% endfor %}
+</body>
+</html>

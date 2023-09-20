@@ -21,10 +21,6 @@ class AvitoScrap:
         self.driver.get(self.url)
 
     def __paginator(self):
-        # while self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']") and self.count > 0:
-        #     self.__scrap_page()
-        #     self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']").click()
-        #     self.count += 1
         while self.count > 0:
             self.__scrap_page()
             next_button = self.driver.find_element(By.CSS_SELECTOR, "[data-marker='pagination-button/nextPage']")
@@ -60,25 +56,21 @@ class AvitoScrap:
                                    price=data['price'])
             scraper_item.save()
 
-            # if any([item in descriptions for item in self.items]):
-            #     self.data.append(data)
-
-            # print(name, descriptions, url, price)
-        # self.__save_data()
-
-
     # def __save_data(self):
     #
     #     sorted_data = sorted(self.data, key=lambda x: float(x['price']))
     #
     #     with open("items.json", 'w', encoding='utf-8') as f:
     #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
+    def __clear_database(self):
+        AvitoItem.objects.all().delete()
 
     def scraping(self):
         self.__set_up()
+        self.__clear_database()
         self.__get_url()
         self.__paginator()
-#
+
 # if __name__=="__main__":
 #     AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104',
 #                count=1,

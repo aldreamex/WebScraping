@@ -28,12 +28,16 @@ body::before {
 }
 
 .centered-box {
+   centered-box {
     background: rgba(255, 255, 255, 0.05);
-    padding: 350px;
-    border-radius: 0px;
-    box-shadow: 30px 10px 30px rgba(0, 0, 0, 2);
+    padding: 20px; /* Уменьшите внутренний отступ блока */
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    max-width: 600px; /* Ограничьте максимальную ширину блока */
+    max-height: 80vh; /* Ограничьте максимальную высоту блока */
+    overflow-y: auto; /* Добавьте вертикальную прокрутку, если контент не влазит */
+}
 
 
 }
 
-}
