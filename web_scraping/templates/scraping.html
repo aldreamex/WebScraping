@@ -12,7 +12,7 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <a class="custom-glow-on-hover btn me-2 py-3 mt-md-2 text-black" href="{% url 'scraping_result' %}">Начать парсинг</a>
+                <a class="text-black" href="{% url 'scraping_result' %}">Начать парсинг</a>
             </form>
 </body>
 </html>

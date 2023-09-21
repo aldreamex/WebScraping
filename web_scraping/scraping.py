@@ -70,7 +70,7 @@ class AvitoScrap:
         self.__clear_database()
         self.__get_url()
         self.__paginator()
-
+#
 # if __name__=="__main__":
 #     AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104',
 #                count=1,

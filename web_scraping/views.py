@@ -12,18 +12,20 @@ def home(request):
     context = {
         'home_item': home_item
     }
-
     return render(request, 'home.html', context)
+
 
 def scraping(request):
     if request.method == 'POST':
         form = AvitoScrapForm(request.POST)
+
         if form.is_valid():
             url = form.cleaned_data['url']
             selected_categories = form.cleaned_data.get('categories')
+            # print(url)
+            # print(selected_categories)
             scraper = AvitoScrap(url=url, items=selected_categories, count=1)
 
-            # Сохраняем значения в сессии
             request.session['url'] = url
             request.session['selected_categories'] = selected_categories
 
@@ -39,21 +41,22 @@ def scraping(request):
     return render(request, 'scraping.html', context)
 
 
+
 def scraping_result(request):
-    """Парсим данные с авито"""
-    # Извлекаем значения из сессии
-    url = 'https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?s=104'
+
+    # url = request.session.get('url')
     # selected_categories = request.session.get('selected_categories', [])
-    # selected_categories = [choice[0] for choice in selected_categories]
-    selected_categories = ['Без комиссии']
-    print(url)
-    print(selected_categories)
-    scraper = AvitoScrap(url=str(url), items=selected_categories, count=1).scraping()
+    url = 'https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104'
+    selected_categories = ['Без комиссии, без залога', 'комнаты']
+    if url is None or not selected_categories:
+        return render(request, 'error.html', {'error_message': 'Данные из формы отсутствуют в сессии'})
+
+    scraper = AvitoScrap(url=str(url), items=selected_categories, count=1)
+    scraper.scraping()
 
     scraper_item = AvitoItem.objects.all()
+
     context = {
         'scraper_item': scraper_item
     }
-
-
     return render(request, 'scraping_result.html', context)
