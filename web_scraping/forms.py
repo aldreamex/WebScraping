@@ -7,8 +7,9 @@ class AvitoScrapForm(forms.Form):
         required=False,
         widget=forms.CheckboxSelectMultiple,
         choices=[
-            ('category1', 'Без комиссии'),
-            ('category2', 'Без комиссии, без залога'),
+            ('Без комиссии', 'Без комиссии'),
+            ('без залога', 'без залога'),
+            ('Без комиссии, без залога', 'Без комиссии, без залога'),
 
         ]
     )

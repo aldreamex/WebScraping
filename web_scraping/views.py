@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from .models import AvitoItem
+from .models import AvitoItem, FormData
 from .scraping import AvitoScrap
 from .forms import AvitoScrapForm
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 
 def home(request):
@@ -15,21 +16,18 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-def scraping(request):
+def save_data_scraping(request):
     if request.method == 'POST':
         form = AvitoScrapForm(request.POST)
 
         if form.is_valid():
             url = form.cleaned_data['url']
             selected_categories = form.cleaned_data.get('categories')
-            # print(url)
-            # print(selected_categories)
-            scraper = AvitoScrap(url=url, items=selected_categories, count=1)
 
-            request.session['url'] = url
-            request.session['selected_categories'] = selected_categories
+            form_item = FormData(form_url=url, categories=selected_categories)
+            form_item.save()
 
-            return redirect('scraping_result')
+            messages.success(request, 'Данные успешно сохранены!')
 
     else:
         form = AvitoScrapForm()
@@ -38,25 +36,24 @@ def scraping(request):
         'form': form
     }
 
-    return render(request, 'scraping.html', context)
-
+    return render(request, 'save_data_scraping.html', context)
 
 
 def scraping_result(request):
+    form_data = FormData.objects.first()
+    url = form_data.form_url
+    categories = form_data.categories
 
-    # url = request.session.get('url')
-    # selected_categories = request.session.get('selected_categories', [])
-    url = 'https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104'
-    selected_categories = ['Без комиссии, без залога', 'комнаты']
-    if url is None or not selected_categories:
-        return render(request, 'error.html', {'error_message': 'Данные из формы отсутствуют в сессии'})
-
-    scraper = AvitoScrap(url=str(url), items=selected_categories, count=1)
+    scraper = AvitoScrap(url=str(url), items=categories, count=1)
     scraper.scraping()
 
     scraper_item = AvitoItem.objects.all()
 
+    print(url)
+    print(categories)
+
     context = {
         'scraper_item': scraper_item
     }
+
     return render(request, 'scraping_result.html', context)

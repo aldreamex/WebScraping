@@ -1,7 +1,8 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from web_scraping.models import AvitoItem
+from web_scraping.models import AvitoItem, FormData
+
 # driver = uc.Chrome()
 # driver.get('https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1')
 
@@ -64,6 +65,7 @@ class AvitoScrap:
     #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
     def __clear_database(self):
         AvitoItem.objects.all().delete()
+        FormData.objects.all().delete()
 
     def scraping(self):
         self.__set_up()
