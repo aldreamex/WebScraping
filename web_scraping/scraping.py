@@ -56,7 +56,7 @@ class AvitoScrap:
                 }
                 self.data.append(data)
 
-            print(self.items)   #Categories to search for: ['Без комиссии']
+            print(self.items)   #['Без комиссии']
 
 
 
