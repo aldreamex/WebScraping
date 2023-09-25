@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 
+
 def home(request):
     home_item = {
         'qwqw': 'erere'
@@ -40,17 +41,22 @@ def save_data_scraping(request):
 
 
 def scraping_result(request):
-    form_data = FormData.objects.first()
+    form_data = FormData.objects.last()
+    print(form_data)    #https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104, ['Без комиссии']
     url = form_data.form_url
     categories = form_data.categories
-
-    scraper = AvitoScrap(url=str(url), items=categories, count=1)
-    scraper.scraping()
-
+    print(url)  #https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104
+    print(categories)   #['Без комиссии']
+    # scraper = AvitoScrap(url=str(url), items=categories, count=1)
+    # scraper.scraping()
+    AvitoScrap(url=url, count=1, items=categories).scraping()
     scraper_item = AvitoItem.objects.all()
+    # ЕСЛИ ПЕРЕДАЮ НАПРЯМУЮ ВСЕ ПАРСИТСЯ ЧЕТКО:
+    # AvitoScrap(
+    #     url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?context=H4sIAAAAAAAA_0q0MrSqLraysFJKK8rPDUhMT1WyLrYyNLNSKk5NLErOcMsvyg3PTElPLVGyrgUEAAD__xf8iH4tAAAA',
+    #     count=1,items=['Без комиссии, без залога']).scraping()
 
-    print(url)
-    print(categories)
+
 
     context = {
         'scraper_item': scraper_item

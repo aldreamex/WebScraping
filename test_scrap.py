@@ -1,7 +1,8 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
-from web_scraping.models import AvitoItem, FormData
+import json
+# from web_scraping.models import AvitoItem, FormData
 
 # driver = uc.Chrome()
 # driver.get('https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1')
@@ -47,7 +48,7 @@ class AvitoScrap:
 
             description_words = descriptions.split()
 
-            if any(item.lower() in ' '.join(description_words).lower() for item in self.items):
+            if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
                 data = {
                     'name': name,
                     'descriptions': descriptions,
@@ -56,42 +57,36 @@ class AvitoScrap:
                 }
                 self.data.append(data)
 
-            print(self.items)   #Categories to search for: ['Без комиссии']
+        # sorted_data = sorted(self.data, key=lambda x: float(x['price']))
 
+        # for data in sorted_data:
+        #     # print(data)
+        #     scraper_item = AvitoItem(name=data['name'],
+        #                            descriptions=data['descriptions'],
+        #                            url=data['url'],
+        #                            price=data['price'])
+        #     scraper_item.save()
 
+    def __save_data(self):
 
         sorted_data = sorted(self.data, key=lambda x: float(x['price']))
 
-        for data in sorted_data:
-            # print(data)
-            scraper_item = AvitoItem(name=data['name'],
-                                   descriptions=data['descriptions'],
-                                   url=data['url'],
-                                   price=data['price'])
-            scraper_item.save()
-
-
-    # def __save_data(self):
-    #
-    #     sorted_data = sorted(self.data, key=lambda x: float(x['price']))
-    #
-    #     with open("items.json", 'w', encoding='utf-8') as f:
-    #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
-    def __clear_database(self):
-        AvitoItem.objects.all().delete()
-        # FormData.objects.all().delete()
+        with open("items.json", 'w', encoding='utf-8') as f:
+            json.dump(sorted_data, f, ensure_ascii=False, indent=4)
+    # def __clear_database(self):
+    #     AvitoItem.objects.all().delete()
+    #     FormData.objects.all().delete()
 
     def scraping(self):
         self.__set_up()
-        self.__clear_database()
+        # self.__clear_database()
         self.__get_url()
         self.__paginator()
-        # asas = FormData.objects.all()
-        # print(asas)
+        self.__save_data()
 
-# if __name__=="__main__":
-#     AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?context=H4sIAAAAAAAA_0q0MrSqLraysFJKK8rPDUhMT1WyLrYyNLNSKk5NLErOcMsvyg3PTElPLVGyrgUEAAD__xf8iH4tAAAA',
-#                count=1,
-#                items=['Без комиссии']
-#                ).scraping()
+if __name__=="__main__":
+    AvitoScrap(url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?context=H4sIAAAAAAAA_0q0MrSqLraysFJKK8rPDUhMT1WyLrYyNLNSKk5NLErOcMsvyg3PTElPLVGyrgUEAAD__xf8iH4tAAAA',
+               count=1,
+               items=['Без залога', 'без комиссии']
+               ).scraping()
 
