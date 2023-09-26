@@ -47,7 +47,7 @@ def scraping_result(request):
     categories = form_data.categories
     categories_list = [categories.strip("[]'") if categories else "Без категории"]
     print(url)
-    print(type(categories_list))
+    print(categories_list)
     # scraper = AvitoScrap(url=str(url), items=categories, count=1)
     # scraper.scraping()
     AvitoScrap(url=url, count=1, items=categories_list).scraping()

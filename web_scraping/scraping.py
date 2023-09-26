@@ -47,7 +47,7 @@ class AvitoScrap:
 
             description_words = descriptions.split()
 
-            if any(item.lower() in ' '.join(description_words).lower() for item in self.items):
+            if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
                 data = {
                     'name': name,
                     'descriptions': descriptions,
@@ -56,14 +56,14 @@ class AvitoScrap:
                 }
                 self.data.append(data)
 
-            print(self.items)   #Categories to search for: ['Без комиссии']
+
 
 
 
         sorted_data = sorted(self.data, key=lambda x: float(x['price']))
 
         for data in sorted_data:
-            # print(data)
+
             scraper_item = AvitoItem(name=data['name'],
                                    descriptions=data['descriptions'],
                                    url=data['url'],
@@ -79,7 +79,7 @@ class AvitoScrap:
     #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
     def __clear_database(self):
         AvitoItem.objects.all().delete()
-        # FormData.objects.all().delete()
+        FormData.objects.all().delete()
 
     def scraping(self):
         self.__set_up()
