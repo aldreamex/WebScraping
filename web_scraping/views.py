@@ -4,7 +4,7 @@ from .scraping import AvitoScrap
 from .forms import AvitoScrapForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
+import ast
 
 
 def home(request):
@@ -45,9 +45,16 @@ def scraping_result(request):
     print(form_data)
     url = form_data.form_url
     categories = form_data.categories
-    categories_list = [categories.strip("[]'") if categories else "Без категории"]
+
+    # categories_list = [categories.strip("[]'") if categories else "Без категории"]
+
+    try:
+        categories_list = ast.literal_eval(categories)
+    except (ValueError, SyntaxError):
+        categories_list = ["Без категории"]
+
     print(url)
-    print(categories_list)
+    print(categories_list[0])
     # scraper = AvitoScrap(url=str(url), items=categories, count=1)
     # scraper.scraping()
     AvitoScrap(url=url, count=1, items=categories_list).scraping()

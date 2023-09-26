@@ -38,11 +38,13 @@ class AvitoScrap:
             descriptions = title.find_element(By.CSS_SELECTOR, "[data-marker='item-specific-params']").text
             url = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
             price = title.find_element(By.CSS_SELECTOR, "[itemprop='price']").get_attribute('content')
+            created_at = title.find_element(By.CSS_SELECTOR, "[data-marker='item-date']").text
             data = {
                 'name': name,
                 'descriptions': descriptions,
                 'url': url,
                 'price': price,
+                'created_at': created_at,
             }
 
             description_words = descriptions.split()
@@ -53,6 +55,7 @@ class AvitoScrap:
                     'descriptions': descriptions,
                     'url': url,
                     'price': price,
+                    'created_at': created_at,
                 }
                 self.data.append(data)
 
@@ -67,7 +70,8 @@ class AvitoScrap:
             scraper_item = AvitoItem(name=data['name'],
                                    descriptions=data['descriptions'],
                                    url=data['url'],
-                                   price=data['price'])
+                                   price=data['price'],
+                                   created_at=data['created_at'])
             scraper_item.save()
 
 
