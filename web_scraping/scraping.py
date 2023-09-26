@@ -38,28 +38,25 @@ class AvitoScrap:
             descriptions = title.find_element(By.CSS_SELECTOR, "[data-marker='item-specific-params']").text
             url = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
             price = title.find_element(By.CSS_SELECTOR, "[itemprop='price']").get_attribute('content')
-            created_at = title.find_element(By.CSS_SELECTOR, "[data-marker='item-date']").text
             data = {
                 'name': name,
                 'descriptions': descriptions,
                 'url': url,
                 'price': price,
-                'created_at': created_at,
             }
 
             description_words = descriptions.split()
 
-            if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
+            if any(item.lower() in ' '.join(description_words).lower() for item in self.items):
                 data = {
                     'name': name,
                     'descriptions': descriptions,
                     'url': url,
                     'price': price,
-                    'created_at': created_at,
                 }
                 self.data.append(data)
 
-
+            print(self.items)   #Categories to search for: ['Без комиссии']
 
 
 
@@ -70,8 +67,7 @@ class AvitoScrap:
             scraper_item = AvitoItem(name=data['name'],
                                    descriptions=data['descriptions'],
                                    url=data['url'],
-                                   price=data['price'],
-                                   created_at=data['created_at'])
+                                   price=data['price'])
             scraper_item.save()
 
 
@@ -83,7 +79,7 @@ class AvitoScrap:
     #         json.dump(sorted_data, f, ensure_ascii=False, indent=4)
     def __clear_database(self):
         AvitoItem.objects.all().delete()
-        FormData.objects.all().delete()
+        # FormData.objects.all().delete()
 
     def scraping(self):
         self.__set_up()
