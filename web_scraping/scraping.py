@@ -37,25 +37,26 @@ class AvitoScrap:
             name = title.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
             descriptions = title.find_element(By.CSS_SELECTOR, "[data-marker='item-specific-params']").text
             owner_descriptions = title.find_element(By.CSS_SELECTOR, "[class*='iva-item-descriptionStep']").text
+            combined_description = f"{descriptions}\n{owner_descriptions}"
             url = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
             price = title.find_element(By.CSS_SELECTOR, "[itemprop='price']").get_attribute('content')
             created_at = title.find_element(By.CSS_SELECTOR, "[data-marker='item-date']").text
             data = {
                 'name': name,
-                'descriptions': descriptions,
-                'owner_descriptions': owner_descriptions,
+                'descriptions': combined_description,
                 'url': url,
                 'price': price,
                 'created_at': created_at,
             }
 
-            description_words = descriptions.split()
+            description_words = combined_description.split()
+
 
             if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
+
                 data = {
                     'name': name,
-                    'descriptions': descriptions,
-                    'owner_descriptions': owner_descriptions,
+                    'descriptions': combined_description,
                     'url': url,
                     'price': price,
                     'created_at': created_at,
@@ -74,8 +75,7 @@ class AvitoScrap:
                                    descriptions=data['descriptions'],
                                    url=data['url'],
                                    price=data['price'],
-                                   created_at=data['created_at'],
-                                   owner_descriptions=data['owner_descriptions'] )
+                                   created_at=data['created_at'],)
             scraper_item.save()
 
 
