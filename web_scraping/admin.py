@@ -9,5 +9,5 @@ class FormAdmin(admin.ModelAdmin):
 
 @admin.register(AvitoItem)
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ['name', 'descriptions', 'url', 'price']
+    list_display = ['name', 'descriptions', 'url', 'price', 'created_at']
 

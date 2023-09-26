@@ -42,14 +42,15 @@ def save_data_scraping(request):
 
 def scraping_result(request):
     form_data = FormData.objects.last()
-    print(form_data)    #https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104, ['Без комиссии']
+    print(form_data)
     url = form_data.form_url
     categories = form_data.categories
-    print(url)  #https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&s=104
-    print(categories)   #['Без комиссии']
+    categories_list = [categories.strip("[]'") if categories else "Без категории"]
+    print(url)
+    print(type(categories_list))
     # scraper = AvitoScrap(url=str(url), items=categories, count=1)
     # scraper.scraping()
-    AvitoScrap(url=url, count=1, items=categories).scraping()
+    AvitoScrap(url=url, count=1, items=categories_list).scraping()
     scraper_item = AvitoItem.objects.all()
     # ЕСЛИ ПЕРЕДАЮ НАПРЯМУЮ ВСЕ ПАРСИТСЯ ЧЕТКО:
     # AvitoScrap(
