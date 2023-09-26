@@ -34,26 +34,14 @@ class AvitoScrap:
     def __scrap_page(self):
         titles = self.driver.find_elements(By.CSS_SELECTOR, "[data-marker='item']")
         for title in titles:
-            name = title.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
-            descriptions = title.find_element(By.CSS_SELECTOR, "[data-marker='item-specific-params']").text
-            owner_descriptions = title.find_element(By.CSS_SELECTOR, "[class*='iva-item-descriptionStep']").text
-            combined_description = f"{descriptions}\n{owner_descriptions}"
-            url = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
-            price = title.find_element(By.CSS_SELECTOR, "[itemprop='price']").get_attribute('content')
-            created_at = title.find_element(By.CSS_SELECTOR, "[data-marker='item-date']").text
-            data = {
-                'name': name,
-                'descriptions': combined_description,
-                'url': url,
-                'price': price,
-                'created_at': created_at,
-            }
-
-            description_words = combined_description.split()
-
-
-            if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
-
+            try:
+                name = title.find_element(By.CSS_SELECTOR, "[itemprop='name']").text
+                descriptions = title.find_element(By.CSS_SELECTOR, "[data-marker='item-specific-params']").text
+                owner_descriptions = title.find_element(By.CSS_SELECTOR, "[class*='iva-item-descriptionStep']").text
+                combined_description = f"{descriptions}\n{owner_descriptions}"
+                url = title.find_element(By.CSS_SELECTOR, "[data-marker='item-title']").get_attribute('href')
+                price = title.find_element(By.CSS_SELECTOR, "[itemprop='price']").get_attribute('content')
+                created_at = title.find_element(By.CSS_SELECTOR, "[data-marker='item-date']").text
                 data = {
                     'name': name,
                     'descriptions': combined_description,
@@ -61,11 +49,23 @@ class AvitoScrap:
                     'price': price,
                     'created_at': created_at,
                 }
-                self.data.append(data)
+
+                description_words = combined_description.split()
 
 
+                if all(item.lower() in ' '.join(description_words).lower() for item in self.items):
 
+                    data = {
+                        'name': name,
+                        'descriptions': combined_description,
+                        'url': url,
+                        'price': price,
+                        'created_at': created_at,
+                    }
+                    self.data.append(data)
 
+            except Exception as e:
+                print(f"Произошла ошибка: {str(e)}")
 
         sorted_data = sorted(self.data, key=lambda x: float(x['price']))
 

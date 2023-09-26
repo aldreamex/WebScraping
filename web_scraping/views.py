@@ -25,10 +25,14 @@ def save_data_scraping(request):
             url = form.cleaned_data['url']
             selected_categories = form.cleaned_data.get('categories')
 
-            form_item = FormData(form_url=url, categories=selected_categories)
-            form_item.save()
+            try:
+                form_item = FormData(form_url=url, categories=selected_categories)
+                form_item.save()
+                messages.success(request, 'Данные успешно сохранены!')
 
-            messages.success(request, 'Данные успешно сохранены!')
+            except IntegrityError as e:
+                error_message = f"Произошла ошибка при сохранении данных в БД: {str(e)}"
+                messages.error(request, error_message)
 
     else:
         form = AvitoScrapForm()
@@ -41,33 +45,32 @@ def save_data_scraping(request):
 
 
 def scraping_result(request):
-    form_data = FormData.objects.last()
-    print(form_data)
-    url = form_data.form_url
-    categories = form_data.categories
-
-    # categories_list = [categories.strip("[]'") if categories else "Без категории"]
-
     try:
-        categories_list = ast.literal_eval(categories)
-    except (ValueError, SyntaxError):
-        categories_list = ["Без категории"]
+        form_data = FormData.objects.last()
 
-    print(url)
-    print(categories_list[0])
-    # scraper = AvitoScrap(url=str(url), items=categories, count=1)
-    # scraper.scraping()
-    AvitoScrap(url=url, count=1, items=categories_list).scraping()
-    scraper_item = AvitoItem.objects.all()
-    # ЕСЛИ ПЕРЕДАЮ НАПРЯМУЮ ВСЕ ПАРСИТСЯ ЧЕТКО:
-    # AvitoScrap(
-    #     url='https://www.avito.ru/bryansk/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?context=H4sIAAAAAAAA_0q0MrSqLraysFJKK8rPDUhMT1WyLrYyNLNSKk5NLErOcMsvyg3PTElPLVGyrgUEAAD__xf8iH4tAAAA',
-    #     count=1,items=['Без комиссии, без залога']).scraping()
+        # print(form_data)
 
+        url = form_data.form_url
+        categories = form_data.categories
 
+        try:
+            categories_list = ast.literal_eval(categories)
+        except (ValueError, SyntaxError):
+            categories_list = ["Без категории"]
 
-    context = {
-        'scraper_item': scraper_item
-    }
+        # print(url)
+        # print(categories_list)
 
-    return render(request, 'scraping_result.html', context)
+        AvitoScrap(url=url, count=1, items=categories_list).scraping()
+        scraper_item = AvitoItem.objects.all()
+
+        context = {
+            'scraper_item': scraper_item
+        }
+
+        return render(request, 'scraping_result.html', context)
+
+    except  (WebDriverException, ValueError) as e:
+        error_message = f"Произошла ошибка: {str(e)}"
+        messages.error(request, error_message)
+        return redirect('home')
