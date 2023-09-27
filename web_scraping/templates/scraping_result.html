@@ -4,20 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_result.css' %}">
     <title>scraping_result</title>
 </head>
 <body>
+        <div class="container">
             {% for item in scraper_item %}
-            <div class="item">
-                <p>
-                    <strong>Название:</strong> {{ item.name }}<br>
-                    <strong>Цена:</strong> {{ item.price }}<br>
-                    <strong>Ссылка:</strong> <a href="{{ item.url }}">{{ item.url }}</a><br>
-                    <strong>Описание:</strong> {{ item.descriptions }}<br>
-                    <strong>Дата:</strong> {{ item.created_at }}<br>
-                </p>
-            </div>
+                <div class="item">
+                    <p>
+                        <strong>Название:</strong> {{ item.name }}<br>
+                        <strong>Цена:</strong> {{ item.price }}<br>
+                        <strong>Ссылка:</strong> <a href="{{ item.url }}">{{ item.url }}</a><br>
+                        <strong>Описание:</strong> {{ item.descriptions }}<br>
+                        <strong>Дата:</strong> {{ item.created_at }}<br>
+                    </p>
+                </div>
             {% endfor %}
+        </div>
 </body>
 </html>

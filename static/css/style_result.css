@@ -1,0 +1,40 @@
+/* Стили для отображения информации */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.item p {
+    margin: 0;
+    padding: 0;
+}
+
+.item strong {
+    font-weight: bold;
+}
+
+.item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.item a:hover {
+    text-decoration: underline;
+}
