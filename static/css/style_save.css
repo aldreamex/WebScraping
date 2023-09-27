@@ -17,17 +17,33 @@ h1 {
     color: #333;
 }
 
-/* Изменяем цвет галочек */
+/* Стили для поля ввода URL */
+input[type="url"] {
+    width: 95%;
+    padding: 7px; /* Внутренний отступ для увеличения высоты поля */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease-in-out; /* Анимация изменения цвета границы */
+}
+
+/* Изменяем цвет границы на зеленый при наведении */
+input[type="url"]:hover {
+    border-color: #2ecc71; /* Зеленая граница при наведении */
+}
+
+
+/* Изменяем цвет галочек и рамки при наведении */
 input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 17px;
     border: 2px solid #000; /* Черная рамка для галочек */
     border-radius: 4px;
-    transition: border-color 0.3s ease-in-out;
-    vertical-align: middle;
+    transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Анимация изменения цвета границы и галочки */
+    vertical-align: middle; /* Выравниваем по вертикали */
     background-color: transparent; /* Убираем задний фон */
     position: relative;
 }
@@ -35,7 +51,7 @@ input[type="checkbox"] {
 /* Создаем галочку внутри галочки */
 input[type="checkbox"]::before {
     content: '\2713'; /* Знак галочки Unicode */
-    font-size: 16px;
+    font-size: 14px;
     color: #000; /* Черный цвет галочки */
     position: absolute;
     top: 50%;
@@ -43,16 +59,32 @@ input[type="checkbox"]::before {
     transform: translate(-50%, -50%);
     opacity: 0; /* Галочка изначально скрыта */
     transition: opacity 0.3s ease-in-out;
+    vertical-align: middle; /* Выравниваем по вертикали */
 }
 
-/* Показываем галочку и зеленую рамку при выборе */
+/* Зеленая галочка при выборе */
 input[type="checkbox"]:checked::before {
     opacity: 1; /* Показываем галочку */
+    color: #1ecc71; /* Зеленый цвет галочки при выборе */
 }
 
-input[type="checkbox"]:checked {
-    border-color: #1ecc71; /* Зеленая рамка при выборе */
+/* Изменяем цвет границы и галочки на зеленый при наведении */
+input[type="checkbox"]:hover {
+    border-color: #2ecc71; /* Зеленая граница при наведении */
+    color: #2ecc71; /* Зеленый цвет галочки при наведении */
 }
+
+/* Стили для текста меток предпочтений */
+#id_categories label {
+    display: flex;
+    align-items: flex-end; /* Выравниваем по нижней границе по вертикали */
+    margin-left: 0px; /* Добавляем небольшой отступ от галочек */
+    height: 30px; /* Устанавливаем высоту равную высоте галочки */
+    vertical-align: middle; /* Выравниваем вертикально по центру */
+    font-size: 18px; /* Увеличиваем размер текста меток */
+}
+
+
 
 /* Стили для кнопок "Сохранить" и "Начать парсинг" */
 .button {
@@ -63,7 +95,7 @@ input[type="checkbox"]:checked {
     color: #fff;
     border: none;
     border-radius: 4px;
-    font-size: 18px;
+    font-size: 17.3px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
     text-decoration: none;
@@ -72,9 +104,79 @@ input[type="checkbox"]:checked {
     border: 2px solid #333; /* Черная рамка */
 }
 
+/* Стили для кнопки "Начать парсинг" */
+.start-button {
+    font-size: 19px; /* Увеличиваем размер текста кнопки "Начать парсинг" */
+}
+
+
 /* Изменяем цвет текста на зеленый, фон на белый, и рамку на зеленую при наведении */
 .button:hover {
     background-color: #fff; /* Белый фон при наведении */
     color: #2ecc71; /* Зеленый текст при наведении */
     border-color: #2ecc71; /* Зеленая рамка при наведении */
 }
+
+/* Стили для сообщений */
+.messages {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.message {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+}
+
+.message.show {
+    opacity: 1;
+    max-height: 100px; /* Максимальная высота сообщения */
+    overflow: auto;
+}
+
+.message.success {
+    background-color: #4CAF50; /* Зеленый фон для успешных сообщений */
+}
+
+.message.error {
+    background-color: #F44336; /* Красный фон для сообщений об ошибках */
+}
+
+.error-message {
+    background-color: #F44336; /* Красный фон для сообщений об ошибках */
+    color: #fff; /* Белый цвет текста */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    max-height: 100px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* CSS для формы */
+.form-element {
+    margin-bottom: 10px; /* Установите желаемый отступ между элементами формы */
+}
+
+/* Стили для ссылки на Avito */
+label[for="id_url"] {
+    font-weight: bold;
+}
+
+/* CSS для виджета множественного выбора */
+.checkbox-multiple {
+    margin-top: 12px; /* Установите желаемый отступ вниз */
+}
+

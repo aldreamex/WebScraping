@@ -48,6 +48,10 @@ def scraping_result(request):
     try:
         form_data = FormData.objects.last()
 
+        if not form_data or not form_data.form_url:
+            messages.error(request, 'Пожалуйста, введите URL')
+            return redirect('save_data_scraping')
+
         # print(form_data)
 
         url = form_data.form_url

@@ -5,7 +5,7 @@ class AvitoScrapForm(forms.Form):
     categories = forms.MultipleChoiceField(
         label='Предпочтения',
         required=False,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'checkbox-multiple'}),
         choices=[
             ('Без комиссии', 'Без комиссии'),
             ('Без залога', 'Без залога'),
