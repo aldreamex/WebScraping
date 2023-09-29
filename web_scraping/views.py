@@ -8,13 +8,7 @@ import ast
 
 
 def home(request):
-    home_item = {
-        'qwqw': 'erere'
-    }
-    context = {
-        'home_item': home_item
-    }
-    return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 
 def save_data_scraping(request):

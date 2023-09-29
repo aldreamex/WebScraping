@@ -8,6 +8,13 @@
     <title>home</title>
 </head>
 <body>
+     {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+     {% endif %}
     <div class="wrapper">
       <div class="link_wrapper">
         <a href="{% url 'save_data_scraping' %}">Недвижимость</a>
@@ -17,5 +24,6 @@
         </div>
       </div>
 </div>
+{% block content %}{% endblock content %}
 </body>
 </html>
